@@ -1,3 +1,3 @@
-module github.com/Yandex-Practicum/go1fl-sprint5-final
+module github.com/s444v/go-fifth-sprint
 
 go 1.23.6
