@@ -30,6 +30,9 @@ func (ds *DaySteps) Parse(datastring string) (err error) {
 		return errors.New("string format does not match")
 	}
 	steps, err := strconv.Atoi(splited[0])
+	if steps <= 0 {
+		return errors.New("steps less or equal 0")
+	}
 	if err != nil {
 		return err
 	}

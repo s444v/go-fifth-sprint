@@ -50,10 +50,14 @@ func (t Training) ActionInfo() (string, error) {
 	if distance <= 0 {
 		return "", errors.New("distance less or equal 0")
 	}
-	if t.TrainingType == "Бег" {
-		return fmt.Sprintf("Тип тренировки: %s\nДлительность: %.2f ч.\nДистанция: %.2f км.\nСкорость: %.2f км/ч\nСожгли калорий: %.2f", t.TrainingType, t.Duration.Hours(), spentenergy.Distance(t.Steps), spentenergy.MeanSpeed(t.Steps, t.Duration), spentenergy.RunningSpentCalories(t.Steps, t.Weight, t.Duration)), nil
-	} else if t.TrainingType == "Ходьба" {
-		return fmt.Sprintf("Тип тренировки: %s\nДлительность: %.2f ч.\nДистанция: %.2f км.\nСкорость: %.2f км/ч\nСожгли калорий: %.2f", t.TrainingType, t.Duration.Hours(), spentenergy.Distance(t.Steps), spentenergy.MeanSpeed(t.Steps, t.Duration), spentenergy.WalkingSpentCalories(t.Steps, t.Weight, t.Height, t.Duration)), nil
+	var calories float64
+	switch t.TrainingType {
+	case "Бег":
+		calories = spentenergy.WalkingSpentCalories(t.Steps, t.Weight, t.Height, t.Duration)
+	case "Ходьба":
+		calories = spentenergy.RunningSpentCalories(t.Steps, t.Weight, t.Duration)
+	default:
+		return "неизвестный тип тренировки", errors.New("unknown training type")
 	}
-	return "неизвестный тип тренировки", errors.New("unknown training type")
+	return fmt.Sprintf("Тип тренировки: %s\nДлительность: %.2f ч.\nДистанция: %.2f км.\nСкорость: %.2f км/ч\nСожгли калорий: %.2f", t.TrainingType, t.Duration.Hours(), spentenergy.Distance(t.Steps), spentenergy.MeanSpeed(t.Steps, t.Duration), calories), nil
 }
